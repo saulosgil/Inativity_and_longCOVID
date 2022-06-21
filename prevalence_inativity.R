@@ -1,8 +1,9 @@
 # Packages  ------------------------------------------------------------------------------------
-library(tidyverse)
+library(ggplot2)
+library(dplyr)
 library(viridis)
 
-# Making dataframe ____-------------------------------------------------------------------------
+# Making dataframe -----------------------------------------------------------------------------
 
 data <- data.frame(sintomas = c("None",
                                 "At least 1 symptom",
@@ -51,12 +52,13 @@ label_data$angle <- ifelse(angle < -90, angle+180, angle)
 
 # Make the plot
 
-data |>
+plot <-
+  data |>
   ggplot(mapping = aes(x = as.factor(id),
                        y = percentual,
                        fill = percentual)) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
   geom_bar(stat="identity") +
-  labs(title = "Prevalence of physical inactivity according to the presence\n of post-acute sequelae of SARS-CoV-2",
+  labs(title = "Prevalence of physical inactivity according to the presence of\n post-acute sequelae of SARS-CoV-2",
        caption = "https://www.researchsquare.com/article/rs-1638885/v1") +
   ylim(-30,120) +
   theme_minimal() +
@@ -66,10 +68,11 @@ data |>
         axis.title = element_blank(),
         panel.grid = element_blank(),
         plot.title = element_text(hjust = 0.5),
-        plot.caption = element_text(hjust = 2.2)
+        plot.caption = element_text(hjust = 0.5),
+        legend.position = "bottom"
   ) +
   coord_polar(start = 0) +
-  scale_fill_gradientn(name = "percentage",
+  scale_fill_gradient(name = "percentage",
                        colours = viridis(n = 256, option = "D")) +
   geom_text(data  = label_data,
             aes(x = id,
@@ -91,4 +94,8 @@ data |>
                size = 0.6,
                inherit.aes = FALSE)
 
+plot
 
+ggsave(filename = "plot.jpeg",
+       width = 10,
+       height = 10)
