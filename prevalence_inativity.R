@@ -72,7 +72,7 @@ plot <-
         legend.position = "bottom"
   ) +
   coord_polar(start = 0) +
-  scale_fill_gradient(name = "percentage",
+  scale_fill_gradientn(name = "percentage",
                        colours = viridis(n = 256, option = "D")) +
   geom_text(data  = label_data,
             aes(x = id,
